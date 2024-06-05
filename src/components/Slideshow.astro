@@ -175,24 +175,24 @@ header {
   import $ from 'jquery'; 
   import 'jquery-mousewheel'; 
   import 'slick-carousel';
-  
-  var $slider = $('.slideshow .slider'),
-    maxItems = $('.item', $slider).length,
-    dragging = false,
-    tracking,
-    rightTracking;
+  import { onMount } from 'solid-js';
 
-const $sliderRight = $('.slideshow').clone().addClass('slideshow-right').appendTo($('.split-slideshow'));
+onMount(() => {
+  const $slider = $('.slideshow .slider');
+  const maxItems = $('.item', $slider).length;
+  let dragging = false;
+  let tracking, rightTracking;
 
-const rightItems = $('.item', $sliderRight).toArray();
-const reverseItems = rightItems.reverse();
-$('.slider', $sliderRight).html('');
-for (var i = 0; i < maxItems; i++) {
+  const $sliderRight = $('.slideshow').clone().addClass('slideshow-right').appendTo($('.split-slideshow'));
+  const rightItems = $('.item', $sliderRight).toArray();
+  const reverseItems = rightItems.reverse();
+  $('.slider', $sliderRight).html('');
+  for (let i = 0; i < maxItems; i++) {
     $(reverseItems[i]).appendTo($('.slider', $sliderRight));
-}
+  }
 
-$slider.addClass('slideshow-left');
-$('.slideshow-left').slick({
+  $slider.addClass('slideshow-left');
+  $('.slideshow-left').slick({
     vertical: true,
     verticalSwiping: true,
     arrows: false,
@@ -200,50 +200,46 @@ $('.slideshow-left').slick({
     dots: true,
     speed: 1000,
     cssEase: 'cubic-bezier(0.7, 0, 0.3, 1)'
-}).on('beforeChange', function(event, slick, currentSlide, nextSlide) {
-
+  }).on('beforeChange', function (event, slick, currentSlide, nextSlide) {
     if (currentSlide > nextSlide && nextSlide == 0 && currentSlide == maxItems - 1) {
-        $('.slideshow-right .slider').slick('slickGoTo', -1);
-        $('.slideshow-text').slick('slickGoTo', maxItems);
+      $('.slideshow-right .slider').slick('slickGoTo', -1);
+      $('.slideshow-text').slick('slickGoTo', maxItems);
     } else if (currentSlide < nextSlide && currentSlide == 0 && nextSlide == maxItems - 1) {
-        $('.slideshow-right .slider').slick('slickGoTo', maxItems);
-        $('.slideshow-text').slick('slickGoTo', -1);
+      $('.slideshow-right .slider').slick('slickGoTo', maxItems);
+      $('.slideshow-text').slick('slickGoTo', -1);
     } else {
-        $('.slideshow-right .slider').slick('slickGoTo', maxItems - 1 - nextSlide);
-        $('.slideshow-text').slick('slickGoTo', nextSlide);
+      $('.slideshow-right .slider').slick('slickGoTo', maxItems - 1 - nextSlide);
+      $('.slideshow-text').slick('slickGoTo', nextSlide);
     }
-}).on('mousedown touchstart', function() {
+  }).on('mousedown touchstart', function () {
     dragging = true;
     tracking = $('.slick-track', $slider).css('transform');
     tracking = parseInt(tracking.split(',')[5]);
     rightTracking = $('.slideshow-right .slick-track').css('transform');
     rightTracking = parseInt(rightTracking.split(',')[5]);
-}).on('mousemove touchmove', function() {
+  }).on('mousemove touchmove', function () {
     if (dragging) {
-        var newTracking = $('.slideshow-left .slick-track').css('transform');
-        newTracking = parseInt(newTracking.split(',')[5]);
-        var diffTracking = newTracking - tracking;
-        $('.slideshow-right .slick-track').css({ 'transform': 'matrix(1, 0, 0, 1, 0, ' + (rightTracking - diffTracking) + ')' });
+      const newTracking = $('.slideshow-left .slick-track').css('transform');
+      const diffTracking = parseInt(newTracking.split(',')[5]) - tracking;
+      $('.slideshow-right .slick-track').css({ 'transform': `matrix(1, 0, 0, 1, 0, ${rightTracking - diffTracking})` });
     }
-}).on('mouseleave touchend mouseup', function() {
+  }).on('mouseleave touchend mouseup', function () {
     dragging = false;
-});
+  });
 
-// Enable scrolling while mouse is over the slideshow
-$('.slideshow-left').on("mousewheel", function(event) {
-    // Check if the slideshow is actively being scrolled
+  // Enable scrolling while mouse is over the slideshow
+  $('.slideshow-left').on("mousewheel", function (event) {
     if ($('.slideshow-left').is(':hover')) {
-        // Slideshow is being scrolled, prevent default to allow scrolling inside the slideshow
-        event.preventDefault();
+      event.preventDefault();
     }
-});
+  });
 
-// Automatically change images at certain intervals
-setInterval(function() {
+  // Automatically change images at certain intervals
+  setInterval(() => {
     $('.slideshow-left').slick('slickNext');
-}, 5000);
+  }, 5000);
 
-$('.slideshow-right .slider').slick({
+  $('.slideshow-right .slider').slick({
     swipe: false,
     vertical: true,
     arrows: false,
@@ -251,16 +247,16 @@ $('.slideshow-right .slider').slick({
     speed: 950,
     cssEase: 'cubic-bezier(0.7, 0, 0.3, 1)',
     initialSlide: maxItems - 1
-});
-$('.slideshow-text').slick({
+  });
+
+  $('.slideshow-text').slick({
     swipe: false,
     vertical: true,
     arrows: false,
     infinite: true,
     speed: 900,
     cssEase: 'cubic-bezier(0.7, 0, 0.3, 1)'
+  });
 });
-
-
 
 </script>
