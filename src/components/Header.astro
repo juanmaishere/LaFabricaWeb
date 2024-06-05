@@ -1,0 +1,68 @@
+---
+import HeaderLink from './HeaderLink.astro';
+
+---
+
+<header>
+	<nav>
+	 <img class="logo" src="logo.png">
+		<div class="internal-links">
+			<HeaderLink href="/">Inicio</HeaderLink>
+			<HeaderLink href="/section">Servicios</HeaderLink>
+			<HeaderLink href="/galeria">Galeria</HeaderLink>
+			<HeaderLink href="/beneficios">Contactanos</HeaderLink>
+		</div>
+		<div class="social-links">
+			
+		</div>
+	</nav>
+</header>
+<style>
+	header {
+		z-index: 5;
+		margin: 0;
+		padding: 0;
+		background: rgb(0, 0, 0);
+		box-shadow: 0 2px 8px rgba(var(--black), 5%);
+		color: white;
+	}
+	.logo {
+		margin: 0.5rem;
+		width: 5rem;
+		height: 5rem;
+	}
+	h2 {
+		margin: 0;
+		font-size: 1em;
+	}
+
+	h2 a,
+	h2 a.active {
+		color: white;
+		text-decoration: none;
+	}
+	nav {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+	nav a {
+		padding: 1em 0.5em;
+		color: var(--black);
+		border-bottom: 4px solid transparent;
+		text-decoration: none;
+	}
+	nav a.active {
+		text-decoration: none;
+		border-bottom-color: var(--accent);
+	}
+	.social-links,
+	.social-links a {
+		display: flex;
+	}
+	@media (max-width: 720px) {
+		.social-links {
+			display: none;
+		}
+	}
+</style>
