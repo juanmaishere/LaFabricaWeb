@@ -2,23 +2,49 @@
 import HeaderLink from './HeaderLink.astro';
 
 ---
-
+<script>
+	function scrollToSection(sectionId) {
+  const targetSection = document.querySelector(sectionId);
+  if (targetSection) {
+    targetSection.scrollIntoView({
+      behavior: 'smooth'
+    });
+  }
+}
+</script>
 <header>
+	<img class="logo" src="logo.png">
 	<nav>
-	 <img class="logo" src="logo.png">
 		<div class="internal-links">
 			<HeaderLink href="/">Inicio</HeaderLink>
-			<HeaderLink href="/section">Servicios</HeaderLink>
-			<HeaderLink href="/galeria">Galeria</HeaderLink>
-			<HeaderLink href="/beneficios">Contactanos</HeaderLink>
+  			<HeaderLink href="#servicios">Servicios</HeaderLink>
+  			<HeaderLink href="#galeria">Galeria</HeaderLink>
+  			<HeaderLink href="#contacto">Contactanos</HeaderLink>
 		</div>
 		<div class="social-links">
 			
 		</div>
+		
+		
 	</nav>
+	<div class="social-links">
+		<a href=""> <img src="whatsapp.png" alt=""></a>  
+		<a href=""> <img src="instagram.png" alt="">     </a>  
+	</div>
 </header>
 <style>
+	
+	.social-links img {
+		width: 2rem;
+		height: 2rem;
+		margin-right: 1rem;
+	}
 	header {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+
 		z-index: 5;
 		margin: 0;
 		padding: 0;
@@ -27,7 +53,7 @@ import HeaderLink from './HeaderLink.astro';
 		color: white;
 	}
 	.logo {
-		margin: 0.5rem;
+		margin-left: 1rem;
 		width: 5rem;
 		height: 5rem;
 	}
@@ -43,8 +69,9 @@ import HeaderLink from './HeaderLink.astro';
 	}
 	nav {
 		display: flex;
+		justify-content: center;
 		align-items: center;
-		justify-content: space-between;
+		justify-content: space-evenly;
 	}
 	nav a {
 		padding: 1em 0.5em;

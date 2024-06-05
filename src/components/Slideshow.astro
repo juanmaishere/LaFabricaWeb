@@ -172,16 +172,17 @@ header {
 </div>
 </div>
 <script>
-  import $ from 'jquery'; 
-  import 'jquery-mousewheel'; 
-  import 'slick-carousel';
-  import { onMount } from 'solid-js';
+    
+import { onMount } from 'solid-js';
+import 'jquery';
+import 'slick-carousel';
+import $ from 'jquery';
 
 onMount(() => {
   const $slider = $('.slideshow .slider');
   const maxItems = $('.item', $slider).length;
   let dragging = false;
-  let tracking, rightTracking;
+  let tracking: number, rightTracking: number;
 
   const $sliderRight = $('.slideshow').clone().addClass('slideshow-right').appendTo($('.split-slideshow'));
   const rightItems = $('.item', $sliderRight).toArray();
@@ -201,10 +202,10 @@ onMount(() => {
     speed: 1000,
     cssEase: 'cubic-bezier(0.7, 0, 0.3, 1)'
   }).on('beforeChange', function (event, slick, currentSlide, nextSlide) {
-    if (currentSlide > nextSlide && nextSlide == 0 && currentSlide == maxItems - 1) {
+    if (currentSlide > nextSlide && nextSlide === 0 && currentSlide === maxItems - 1) {
       $('.slideshow-right .slider').slick('slickGoTo', -1);
       $('.slideshow-text').slick('slickGoTo', maxItems);
-    } else if (currentSlide < nextSlide && currentSlide == 0 && nextSlide == maxItems - 1) {
+    } else if (currentSlide < nextSlide && currentSlide === 0 && nextSlide === maxItems - 1) {
       $('.slideshow-right .slider').slick('slickGoTo', maxItems);
       $('.slideshow-text').slick('slickGoTo', -1);
     } else {
@@ -213,28 +214,18 @@ onMount(() => {
     }
   }).on('mousedown touchstart', function () {
     dragging = true;
-    tracking = $('.slick-track', $slider).css('transform');
-    tracking = parseInt(tracking.split(',')[5]);
-    rightTracking = $('.slideshow-right .slick-track').css('transform');
-    rightTracking = parseInt(rightTracking.split(',')[5]);
+    tracking = parseInt($('.slick-track', $slider).css('transform').split(',')[5]);
+    rightTracking = parseInt($('.slideshow-right .slick-track').css('transform').split(',')[5]);
   }).on('mousemove touchmove', function () {
     if (dragging) {
-      const newTracking = $('.slideshow-left .slick-track').css('transform');
-      const diffTracking = parseInt(newTracking.split(',')[5]) - tracking;
+      const newTracking = parseInt($('.slideshow-left .slick-track').css('transform').split(',')[5]);
+      const diffTracking = newTracking - tracking;
       $('.slideshow-right .slick-track').css({ 'transform': `matrix(1, 0, 0, 1, 0, ${rightTracking - diffTracking})` });
     }
   }).on('mouseleave touchend mouseup', function () {
     dragging = false;
   });
 
-  // Enable scrolling while mouse is over the slideshow
-  $('.slideshow-left').on("mousewheel", function (event) {
-    if ($('.slideshow-left').is(':hover')) {
-      event.preventDefault();
-    }
-  });
-
-  // Automatically change images at certain intervals
   setInterval(() => {
     $('.slideshow-left').slick('slickNext');
   }, 5000);
@@ -256,6 +247,15 @@ onMount(() => {
     infinite: true,
     speed: 900,
     cssEase: 'cubic-bezier(0.7, 0, 0.3, 1)'
+  });
+
+  // Allow page scrolling when mouse is over the slideshow
+  $('.slideshow-container').on('mouseenter', function () {
+    $(window).on('scroll.slideshow', function (e) {
+      e.preventDefault();
+    });
+  }).on('mouseleave', function () {
+    $(window).off('scroll.slideshow');
   });
 });
 
