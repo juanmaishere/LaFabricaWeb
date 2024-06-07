@@ -122,4 +122,13 @@
         margin: 10px;
         text-align: center;
     }
+    @media screen and (max-width: 768px) {
+    .gallery {
+        margin-top: 2rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(50vw, 1fr)); /* Define minimum and maximum width for columns */
+        gap: 0px;
+        width: 100%;
+    }
+}
 </style>
