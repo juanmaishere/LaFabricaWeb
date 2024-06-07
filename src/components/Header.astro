@@ -2,23 +2,14 @@
 import HeaderLink from './HeaderLink.astro';
 
 ---
-<script>
-	function scrollToSection(sectionId) {
-  const targetSection = document.querySelector(sectionId);
-  if (targetSection) {
-    targetSection.scrollIntoView({
-      behavior: 'smooth'
-    });
-  }
-}
-</script>
-<header>
+
+<header id="head">
 	<img class="logo" src="logo.png">
 	<nav>
 		<div class="internal-links">
-			<HeaderLink href="/">Inicio</HeaderLink>
+			<HeaderLink href="#head">Inicio</HeaderLink>
   			<HeaderLink href="#servicios">Servicios</HeaderLink>
-  			<HeaderLink href="#galeria">Galeria</HeaderLink>
+			<HeaderLink href="#galeria">Galeria</HeaderLink>
   			<HeaderLink href="#contacto">Contactanos</HeaderLink>
 		</div>
 		<div class="social-links">
@@ -40,17 +31,22 @@ import HeaderLink from './HeaderLink.astro';
 		margin-right: 1rem;
 	}
 	header {
+		position: fixed;
+		top: 0;
+    	left: 0;
+    	width: 100%;
+		height: 10vh;
+    	z-index: 1000;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
-
-		z-index: 5;
 		margin: 0;
 		padding: 0;
 		background: rgb(0, 0, 0);
 		box-shadow: 0 2px 8px rgba(var(--black), 5%);
 		color: white;
+		transition: height 0.3s ease;
 	}
 	.logo {
 		margin-left: 1rem;
@@ -81,8 +77,9 @@ import HeaderLink from './HeaderLink.astro';
 	}
 	nav a.active {
 		text-decoration: none;
-		border-bottom-color: var(--accent);
+		padding: 0.3rem;
 	}
+
 	.social-links,
 	.social-links a {
 		display: flex;
@@ -92,4 +89,30 @@ import HeaderLink from './HeaderLink.astro';
 			display: none;
 		}
 	}
+
+  /* Styles for the scrolled header */
+  header.scrolled {
+    background-color: rgba(0, 0, 0, 0.586); /* Transparent version */
+    height: 8vh; /* Adjust the height as needed */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.286); /* Add shadow for depth */
+  }
+  header.scrolled .logo {
+	width: 4rem;
+	height: 4rem;
+  }
+  /* Additional styling for the content below the header */
+
+
 </style>
+<script>
+
+  // Add a class to the header when the user scrolls down
+  window.addEventListener('scroll', () => {
+    const header = document.querySelector('header');
+    if (window.scrollY > 0) {
+      header!.classList.add('scrolled');
+    } else {
+      header!.classList.remove('scrolled');
+    }
+  });
+</script>

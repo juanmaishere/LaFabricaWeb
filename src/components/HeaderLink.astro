@@ -1,5 +1,6 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
+import { scrollToSection } from './scrollToSection'; // Adjust the path accordingly
 
 type Props = HTMLAttributes<'a'>;
 
@@ -10,13 +11,17 @@ const subpath = pathname.match(/[^\/]+/g);
 const isActive = href === pathname || href === '/' + subpath?.[0];
 ---
 
-<a href={href} class:list={[className, { active: isActive }]} {...props}>
-	<slot />
+<a href={href?.toString() ?? '#'} class:list={[className, { active: isActive }]} onclick={`(${scrollToSection})(event)`} data-section={typeof href === 'string' ? href.replace('#', '') : ''}>
+    <slot />
 </a>
+
 <style>
 	a {
 		display: inline-block;
 		text-decoration: none;
+		color: white;
+		text-decoration: none;
+		padding: 1em;
 	}
 	a.active {
 		font-weight: bolder;
